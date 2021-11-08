@@ -6,7 +6,22 @@ import MenuStyle from './MenuStyle';
 function UserMenu({ closed, setClosed }) {
 	UserMenu.handleClickOutside = () => setClosed(true);
 
-	return <UserMenuStyle closed={closed}>Login</UserMenuStyle>;
+	return (
+		<UserMenuStyle closed={closed}>
+			<ul>
+				<li>primeiro</li>
+				<li>teste</li>
+				<li>teste</li>
+				<li>teste</li>
+				<li>teste</li>
+				<li>teste</li>
+				<li>teste</li>
+				<li>teste</li>
+				<li>teste</li>
+				<li>teste</li>
+			</ul>
+		</UserMenuStyle>
+	);
 }
 
 const clickOutsideConfig = {
@@ -15,6 +30,7 @@ const clickOutsideConfig = {
 
 const UserMenuStyle = styled(MenuStyle)`
 	border-left: 1px solid #023894;
+	border-bottom-left-radius: 5px;
 	right: 0px;
 	display: flex;
 	flex-direction: column;

@@ -7,6 +7,7 @@ import UserAvatar from './UserAvatar';
 import CartIcon from './CartIcon';
 import UserMenu from '../menus/UserMenu';
 import CategoryMenu from '../menus/CategoryMenu';
+import ShadowBackground from '../menus/ShadowBackgound';
 
 import { useState } from 'react';
 
@@ -40,6 +41,9 @@ export default function Header() {
 				setClosed={setCategoryMenuClosed}
 			/>
 			<UserMenu closed={userMenuClosed} setClosed={setUserMenuClosed} />
+			<ShadowBackground
+				menuClosed={categoryMenuClosed && userMenuClosed}
+			/>
 		</HeaderContainer>
 	);
 }
