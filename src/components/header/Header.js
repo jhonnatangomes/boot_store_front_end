@@ -15,9 +15,16 @@ export default function Header() {
 	const [categoryMenuClosed, setCategoryMenuClosed] = useState(true);
 	const [userMenuClosed, setUserMenuClosed] = useState(true);
 
+	const closeBothMenu = () => {
+		if (!categoryMenuClosed || !userMenuClosed) {
+			setCategoryMenuClosed(true);
+			setUserMenuClosed(true);
+		}
+	};
+
 	return (
 		<HeaderContainer>
-			<HeaderStyle>
+			<HeaderStyle onClick={closeBothMenu}>
 				<SideContainer>
 					<MenuIcon
 						onClick={() =>
@@ -31,18 +38,20 @@ export default function Header() {
 
 				<SideContainer>
 					<CartIcon />
-					<UserAvatar
-						onClick={() => setUserMenuClosed(!userMenuClosed)}
-					/>
+					<UserAvatar onClick={() => setUserMenuClosed(false)} />
 				</SideContainer>
 			</HeaderStyle>
+
 			<CategoryMenu
 				closed={categoryMenuClosed}
 				setClosed={setCategoryMenuClosed}
 			/>
+
 			<UserMenu closed={userMenuClosed} setClosed={setUserMenuClosed} />
+
 			<ShadowBackground
 				menuClosed={categoryMenuClosed && userMenuClosed}
+				onClick={closeBothMenu}
 			/>
 		</HeaderContainer>
 	);

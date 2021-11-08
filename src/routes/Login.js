@@ -1,3 +1,7 @@
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+
 export default function Login() {
-	return <div>Login</div>;
+	const { setUser } = useContext(UserContext);
+	return <div onClick={() => setUser('teste')}>Login</div>;
 }
