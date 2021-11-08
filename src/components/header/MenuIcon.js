@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 import { AiOutlineMenu } from 'react-icons/ai';
 
-export default function MenuIcon() {
+export default function MenuIcon({ onClick }) {
 	return (
-		<IconStyle>
+		<IconStyle onClick={onClick}>
 			<AiOutlineMenu />
 		</IconStyle>
 	);

@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 
+import { useHistory } from 'react-router-dom';
+import routes from '../../routes/routes';
+
 export default function Logo() {
-	return <LogoStyle>BS</LogoStyle>;
+	const history = useHistory();
+
+	return <LogoStyle onClick={() => history.push(routes.home)}>BS</LogoStyle>;
 }
 
 const LogoStyle = styled.div`
