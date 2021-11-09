@@ -1,3 +1,7 @@
+import { useParams } from 'react-router-dom';
+
 export default function Categories() {
-	return <div>Categories</div>;
+	const { categoryName } = useParams();
+
+	return <div>{categoryName}</div>;
 }
