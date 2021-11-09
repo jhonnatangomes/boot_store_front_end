@@ -11,7 +11,7 @@ export default function Pages({ numPages, setProducts }) {
     function handleClick(e) {
         const promise = getProducts(e.target.textContent);
         promise.then((res) => {
-            setProducts(res.data);
+            setProducts(res.data.products);
             window.scrollTo(0, 0);
         });
     }

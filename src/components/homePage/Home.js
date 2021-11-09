@@ -6,12 +6,16 @@ import Pages from "./Pages";
 
 export default function Home() {
     const [products, setProducts] = useState(null);
+    const [count, setCount] = useState(0);
     console.log(products);
 
     useEffect(() => {
         const promise = getProducts();
         promise
-            .then((res) => setProducts(res.data))
+            .then((res) => {
+                setProducts(res.data.products);
+                setCount(res.data.count);
+            })
             .catch((err) => {
                 alert("Ocorreu um erro interno");
                 console.log(err.response);
@@ -28,10 +32,7 @@ export default function Home() {
                         ))}
                     </ProductsGrid>
                     {products.length ? (
-                        <Pages
-                            numPages={products[0].count}
-                            setProducts={setProducts}
-                        />
+                        <Pages numPages={count} setProducts={setProducts} />
                     ) : (
                         ""
                     )}

@@ -5,6 +5,6 @@ const axiosBase = axios.create({
 });
 
 const getServerStatus = () => axiosBase.get("/status");
-const getProducts = (page) => axiosBase.get(`/products?page=${page}`);
+const getProducts = (page = 1) => axiosBase.get(`/products?page=${page}`);
 
 export { getServerStatus, getProducts };
