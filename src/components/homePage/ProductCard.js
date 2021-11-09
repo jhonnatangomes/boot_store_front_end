@@ -2,8 +2,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router";
 
 export default function ProductCard({ product }) {
-    const { uuid, name, description, price, color_id, image_url, category_id } =
-        product;
+    const { uuid, name, price, image_url } = product;
     const history = useHistory();
     return (
         <Card onClick={() => history.push(`/produtos/${uuid}`)}>
