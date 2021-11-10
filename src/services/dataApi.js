@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosBase = axios.create({
-	baseURL: 'https://boot-store.herokuapp.com/',
+	baseURL: 'http://localhost:4000/',
 });
 
 const getServerStatus = () => axiosBase.get('/status');
