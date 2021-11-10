@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { getProducts } from "../../services/dataApi";
 
-export default function Pages({ numPages, setProducts }) {
+export default function Pages({ numPages, setData }) {
     const pages = [];
 
     for (let i = 0; i < Number(numPages) / 16; i++) {
@@ -11,7 +11,7 @@ export default function Pages({ numPages, setProducts }) {
     function handleClick(e) {
         const promise = getProducts(e.target.textContent);
         promise.then((res) => {
-            setProducts(res.data.products);
+            setData(res.data);
             window.scrollTo(0, 0);
         });
     }

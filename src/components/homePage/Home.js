@@ -5,16 +5,13 @@ import { useEffect, useState } from "react";
 import Pages from "./Pages";
 
 export default function Home() {
-    const [products, setProducts] = useState(null);
-    const [count, setCount] = useState(0);
-    console.log(products);
+    const [data, setData] = useState(null);
 
     useEffect(() => {
         const promise = getProducts();
         promise
             .then((res) => {
-                setProducts(res.data.products);
-                setCount(res.data.count);
+                setData(res.data);
             })
             .catch((err) => {
                 alert("Ocorreu um erro interno");
@@ -24,15 +21,15 @@ export default function Home() {
 
     return (
         <HomeContainer>
-            {products ? (
+            {data ? (
                 <>
                     <ProductsGrid>
-                        {products.map((product) => (
+                        {data.products.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </ProductsGrid>
-                    {products.length ? (
-                        <Pages numPages={count} setProducts={setProducts} />
+                    {data.products.length ? (
+                        <Pages numPages={data.count} setData={setData} />
                     ) : (
                         ""
                     )}
