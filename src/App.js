@@ -4,7 +4,7 @@ import Header from './components/header/Header';
 import PageContainer from './components/containers/PageContainer';
 
 import routes from './routes/routes';
-import Home from './routes/Home';
+import Home from './components/homePage/Home';
 import Login from './routes/Login';
 import Categories from './routes/Categories';
 import Product from './routes/Product';

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import SearchBar from './SearchBarInput';
 
 export default function SearchBarContainerMobile({ closed }) {
-	console.log(closed);
 	return (
 		<ContainerStyle closed={closed}>
 			<SearchBar />
@@ -26,6 +25,6 @@ const ContainerStyle = styled.div`
 	}
 
 	@media (min-width: 600px) {
-		display: 'none';
+		display: none;
 	}
 `;
