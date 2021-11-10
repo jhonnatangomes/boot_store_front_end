@@ -6,22 +6,20 @@ import Pages from './Pages';
 
 export default function Home() {
     const [products, setProducts] = useState(null);
-    const [count, setCount] = useState(null);
+    const [pagesCount, setPagesCount] = useState(null);
 
     useEffect(() => {
-        const promise = getProducts();
-        promise
+        getProducts()
             .then((res) => {
                 if (res.data.products) {
                     setProducts(res.data.products);
-                    setCount(res.data.count);
+                    setPagesCount(res.data.pagesCount);
                 } else {
                     setProducts([]);
                 }
             })
             .catch((err) => {
-                alert('Ocorreu um erro interno');
-                console.log(err.response);
+                setProducts([]);
             });
     }, []);
 
@@ -40,7 +38,10 @@ export default function Home() {
                                 ))}
                             </ProductsGrid>
 
-                            <Pages numPages={count} setProducts={setProducts} />
+                            <Pages
+                                numPages={pagesCount}
+                                setProducts={setProducts}
+                            />
                         </>
                     ) : (
                         <p> Não há produtos a serem exibidos</p>
@@ -76,5 +77,17 @@ const ProductsGrid = styled.div`
 
     & > div {
         margin: 20px 7px;
+    }
+
+    @media (max-width: 1055px) {
+        max-width: 792px; // 3 ProductCards widths
+    }
+
+    @media (max-width: 791px) {
+        max-width: 528px; // 2 ProductCards widths
+    }
+
+    @media (max-width: 527px) {
+        max-width: 264px; // 1 ProductCards widths
     }
 `;
