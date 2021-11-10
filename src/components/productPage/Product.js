@@ -1,6 +1,7 @@
 import { getProductInfo } from '../../services/dataApi';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
+import ProductInfo from './ProductInfo';
 import styled from 'styled-components';
 
 export default function Product() {
@@ -27,18 +28,33 @@ export default function Product() {
     }, []);
 
     return (
-        <ProductContainer>
-            <div>Product</div>
-        </ProductContainer>
+        <PageContainer>
+            {productInfo ? (
+                <ProductContainer>
+                    <ProductInfo info={productInfo}></ProductInfo>
+                </ProductContainer>
+            ) : (
+                'Carregando'
+            )}
+        </PageContainer>
     );
 }
 
-const ProductContainer = styled.div`
+const PageContainer = styled.div`
     min-height: calc(100vh - var(--header-height) - 1px);
     text-align: center;
     display: flex;
-    justify-content: space-between;
-    flex-direction: column;
     align-items: center;
-    padding-top: 45px;
+    justify-content: center;
+`;
+
+const ProductContainer = styled.div`
+    /* width: 880px;
+    height: 608px; */
+    width: 1050px;
+    height: 600px;
+    border: 1px solid lightgray;
+    padding: 27px;
+    border-radius: 5px;
+    background-color: rgb(239, 239, 239);
 `;
