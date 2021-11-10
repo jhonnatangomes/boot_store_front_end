@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import HeaderIconButton from '../buttons/HeaderIconButton';
 
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 
@@ -9,16 +9,8 @@ export default function CartIcon() {
 	const history = useHistory();
 
 	return (
-		<IconStyle onClick={() => history.push(routes.cart)}>
+		<HeaderIconButton onClick={() => history.push(routes.cart)}>
 			<AiOutlineShoppingCart />
-		</IconStyle>
+		</HeaderIconButton>
 	);
 }
-
-const IconStyle = styled.div`
-	font-size: 35px;
-	color: rgb(255, 255, 255);
-	padding-top: 2px;
-	margin: 0 0 0 20px;
-	cursor: pointer;
-`;

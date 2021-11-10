@@ -10,9 +10,11 @@ export default function MenuIcon({ onClick }) {
 	);
 }
 
-const IconStyle = styled.div`
+const IconStyle = styled.button`
 	font-size: 30px;
 	color: rgb(255, 255, 255);
-	padding-top: 15px;
+	padding: 15px 0 0;
+	border: none;
+	background-color: transparent;
 	cursor: pointer;
 `;

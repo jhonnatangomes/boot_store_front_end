@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 import MenuIcon from './MenuIcon';
 import Logo from './Logo';
-import SearchBarContainer from '../containers/SearchBarContainer';
+import SearchBarContainerDesktop from './searchBar/SearchBarContainerDesktop';
+import SearchBarContainerMobile from './searchBar/SearchBarContainerMobile';
+import SearchIconMobile from './searchBar/SearchIconMobile';
 import UserAvatar from './UserAvatar';
 import CartIcon from './CartIcon';
 import UserMenu from '../menus/UserMenu';
@@ -12,13 +14,15 @@ import ShadowBackground from '../menus/ShadowBackgound';
 import { useState } from 'react';
 
 export default function Header() {
+	const [mobileSearchClosed, setMobileSearchClosed] = useState(true);
 	const [categoryMenuClosed, setCategoryMenuClosed] = useState(true);
 	const [userMenuClosed, setUserMenuClosed] = useState(true);
 
 	const closeBothMenu = () => {
-		if (!categoryMenuClosed || !userMenuClosed) {
+		if (!categoryMenuClosed || !userMenuClosed || !mobileSearchClosed) {
 			setCategoryMenuClosed(true);
 			setUserMenuClosed(true);
+			setMobileSearchClosed(true);
 		}
 	};
 
@@ -34,13 +38,20 @@ export default function Header() {
 					<Logo />
 				</SideContainer>
 
-				<SearchBarContainer />
+				<SearchBarContainerDesktop />
 
 				<SideContainer>
+					<SearchIconMobile
+						onClick={() =>
+							setMobileSearchClosed(!mobileSearchClosed)
+						}
+					/>
 					<CartIcon />
 					<UserAvatar onClick={() => setUserMenuClosed(false)} />
 				</SideContainer>
 			</HeaderStyle>
+
+			<SearchBarContainerMobile closed={mobileSearchClosed} />
 
 			<CategoryMenu
 				closed={categoryMenuClosed}
@@ -50,7 +61,9 @@ export default function Header() {
 			<UserMenu closed={userMenuClosed} setClosed={setUserMenuClosed} />
 
 			<ShadowBackground
-				menuClosed={categoryMenuClosed && userMenuClosed}
+				menuClosed={
+					categoryMenuClosed && userMenuClosed && mobileSearchClosed
+				}
 				onClick={closeBothMenu}
 			/>
 		</HeaderContainer>
@@ -60,7 +73,8 @@ export default function Header() {
 const HeaderContainer = styled.div`
 	width: 100%;
 	height: var(--header-height);
-	position: relative;
+	position: -webkit-sticky;
+	top: 0;
 	z-index: 10;
 `;
 

@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 import { AiOutlineUser } from 'react-icons/ai';
 
+import HeaderIconButton from '../buttons/HeaderIconButton';
+
 export default function UserAvatar({ onClick }) {
 	return (
 		<AvatarContainer onClick={onClick}>
@@ -10,12 +12,9 @@ export default function UserAvatar({ onClick }) {
 	);
 }
 
-const AvatarContainer = styled.div`
+const AvatarContainer = styled(HeaderIconButton)`
 	font-size: 30px;
-	color: rgb(255, 255, 255);
-	margin: 0 0 0 20px;
 	padding: 0 2px;
 	border: 2px solid rgb(255, 255, 255);
 	border-radius: 50%;
-	cursor: pointer;
 `;
