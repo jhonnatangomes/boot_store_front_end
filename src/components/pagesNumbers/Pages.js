@@ -1,18 +1,20 @@
 import styled from 'styled-components';
 import { getProducts } from '../../services/dataApi';
 
-export default function Pages({ numPages, setProducts }) {
+export default function Pages({ totalPages, currentPage, setCurrentPage }) {
 	const pages = [];
 
-	for (let i = 1; i <= numPages; i++) {
+	for (let i = 1; i <= totalPages; i++) {
 		pages.push(i);
 	}
 
 	function handleClick(e) {
-		getProducts(e.target.textContent).then(res => {
-			setProducts(res.data.products);
-			window.scrollTo(0, 0);
-		});
+		const clickedPageNumber = Number(e.target.innerHTML);
+
+		if (clickedPageNumber === currentPage) return;
+
+		setCurrentPage(clickedPageNumber);
+		window.scrollTo(0, 0);
 	}
 
 	return (
