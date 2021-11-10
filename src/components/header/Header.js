@@ -73,7 +73,7 @@ export default function Header() {
 const HeaderContainer = styled.div`
 	width: 100%;
 	height: var(--header-height);
-	position: -webkit-sticky;
+	position: fixed;
 	top: 0;
 	z-index: 10;
 `;

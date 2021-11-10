@@ -5,11 +5,11 @@ import PageContainer from './components/containers/PageContainer';
 
 import routes from './routes/routes';
 import Home from './components/homePage/Home';
-import Login from './routes/Login';
-import Categories from './routes/Categories';
-import Product from './routes/Product';
-import Cart from './routes/Cart';
-import UserOrders from './routes/UserOrders';
+import Login from './components/login/Login';
+import Categories from './components/categories/Categories';
+import Product from './components/productPage/Product';
+import Cart from './components/cart/Cart';
+import UserOrders from './components/userOrders/UserOrders';
 
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { useState } from 'react';

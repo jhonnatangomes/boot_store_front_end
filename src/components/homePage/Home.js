@@ -6,14 +6,14 @@ import Pages from './Pages';
 
 export default function Home() {
 	const [products, setProducts] = useState(null);
-	const [count, setCount] = useState(null);
+	const [pagesCount, setPagesCount] = useState(null);
 
 	useEffect(() => {
 		getProducts()
 			.then(res => {
 				if (res.data.products) {
 					setProducts(res.data.products);
-					setCount(res.data.count);
+					setPagesCount(res.data.pagesCount);
 				} else {
 					setProducts([]);
 				}
@@ -38,7 +38,10 @@ export default function Home() {
 								))}
 							</ProductsGrid>
 
-							<Pages numPages={count} setProducts={setProducts} />
+							<Pages
+								numPages={pagesCount}
+								setProducts={setProducts}
+							/>
 						</>
 					) : (
 						<p> Não há produtos a serem exibidos</p>
