@@ -5,8 +5,12 @@ const axiosBase = axios.create({
 });
 
 const getServerStatus = () => axiosBase.get('/status');
+
 const getProducts = (page = 1) => axiosBase.get(`/products?page=${page}`);
 
 const getAllCategories = () => axiosBase.get('/categories');
 
-export { getServerStatus, getAllCategories, getProducts };
+const getCategoryProducts = (categoryName, page = 1) =>
+	axiosBase.get(`/category/${categoryName}?page=${page}`);
+
+export { getServerStatus, getAllCategories, getProducts, getCategoryProducts };
