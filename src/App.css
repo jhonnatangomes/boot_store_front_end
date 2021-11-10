@@ -1,0 +1,9 @@
+:root {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	--header-height: 70px;
+}
+
+body {
+	background-color: rgb(255, 255, 255);
+}
