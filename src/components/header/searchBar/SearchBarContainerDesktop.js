@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import SearchBar from '../formsAndInputs/SearchBar';
+import SearchBar from './SearchBarInput';
 
-export default function SearchBarContainer() {
+export default function SearchBarContainerDesktop() {
 	return (
 		<ContainerStyle>
 			<SearchBar />
@@ -19,6 +19,10 @@ const ContainerStyle = styled.div`
 	width: 100%;
 	max-width: 600px;
 	position: relative;
+
+	@media (max-width: 600px) {
+		display: none;
+	}
 `;
 
 const SearchButton = styled.button`

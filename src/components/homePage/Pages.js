@@ -4,15 +4,12 @@ import { getProducts } from '../../services/dataApi';
 export default function Pages({ numPages, setProducts }) {
 	const pages = [];
 
-	const productPerPage = 16;
-
-	for (let i = 0; i < Number(numPages) / productPerPage; i++) {
-		pages.push(i + 1);
+	for (let i = 1; i <= numPages; i++) {
+		pages.push(i);
 	}
 
 	function handleClick(e) {
-		const promise = getProducts(e.target.textContent);
-		promise.then(res => {
+		getProducts(e.target.textContent).then(res => {
 			setProducts(res.data.products);
 			window.scrollTo(0, 0);
 		});
