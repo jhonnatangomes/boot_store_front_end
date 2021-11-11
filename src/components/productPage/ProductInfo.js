@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export default function ProductInfo({ info }) {
     const { name, description, image_url, category, price, color } = info;
@@ -17,7 +18,9 @@ export default function ProductInfo({ info }) {
                 <OtherInfo>Cor: {color}</OtherInfo>
                 <HorizontalSeparator></HorizontalSeparator>
                 <Price>Preço: R$ {price.replace('.', ',')}</Price>
-                <Button>Adicionar ao carrinho</Button>
+                <Link to="/carrinho/:cartId">
+                    <Button>Adicionar ao carrinho</Button>
+                </Link>
             </InfoContainer>
         </ProductInfoContainer>
     );
