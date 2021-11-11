@@ -49,8 +49,6 @@ const PageContainer = styled.div`
 `;
 
 const ProductContainer = styled.div`
-    /* width: 880px;
-    height: 608px; */
     width: 1050px;
     height: 600px;
     border: 1px solid lightgray;

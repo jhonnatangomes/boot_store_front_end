@@ -5,10 +5,20 @@ const axiosBase = axios.create({
 });
 
 const getServerStatus = () => axiosBase.get('/status');
-const getProducts = (page = 1) => axiosBase.get(`/products?page=${page}`);
 
-const getProductInfo = (uuid) => axiosBase.get(`/products/${uuid}`);
+const getProducts = (page = 1) => axiosBase.get(`/products?page=${page}`);
 
 const getAllCategories = () => axiosBase.get('/categories');
 
-export { getServerStatus, getAllCategories, getProducts, getProductInfo };
+const getCategoryProducts = (categoryName, page = 1) =>
+    axiosBase.get(`/category/${categoryName}?page=${page}`);
+
+const getProductInfo = (uuid) => axiosBase.get(`/products/${uuid}`);
+
+export {
+    getServerStatus,
+    getAllCategories,
+    getProducts,
+    getCategoryProducts,
+    getProductInfo,
+};
