@@ -15,10 +15,13 @@ const getCategoryProducts = (categoryName, page = 1) =>
 
 const postSignUp = requestBody => axiosBase.post('/sign-up', requestBody);
 
+const getProductInfo = uuid => axiosBase.get(`/products/${uuid}`);
+
 export {
 	getServerStatus,
 	getAllCategories,
 	getProducts,
 	getCategoryProducts,
 	postSignUp,
+	getProductInfo,
 };
