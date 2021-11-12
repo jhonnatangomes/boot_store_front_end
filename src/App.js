@@ -6,6 +6,7 @@ import PageContainer from './components/containers/PageContainer';
 import routes from './routes/routes';
 import Home from './components/homePage/Home';
 import Login from './components/login/Login';
+import SignUp from './components/signUp/SignUp';
 import Categories from './components/categories/Categories';
 import Product from './components/productPage/Product';
 import Cart from './components/cart/Cart';
@@ -17,42 +18,46 @@ import { useState } from 'react';
 import UserContext from './contexts/UserContext';
 
 export default function App() {
-    const [user, setUser] = useState(null);
+	const [user, setUser] = useState(null);
 
-    return (
-        <BrowserRouter>
-            <UserContext.Provider value={{ user, setUser }}>
-                <Header />
-                <PageContainer>
-                    <Switch>
-                        <Route exact path={routes.login}>
-                            <Login />
-                        </Route>
+	return (
+		<BrowserRouter>
+			<UserContext.Provider value={{ user, setUser }}>
+				<Header />
+				<PageContainer>
+					<Switch>
+						<Route exact path={routes.signUp}>
+							<SignUp />
+						</Route>
 
-                        <Route exact path={routes.userOrders}>
-                            <UserOrders />
-                        </Route>
+						<Route exact path={routes.login}>
+							<Login />
+						</Route>
 
-                        <Route exact path={routes.cart}>
-                            <Cart />
-                        </Route>
+						<Route exact path={routes.userOrders}>
+							<UserOrders />
+						</Route>
 
-                        <Route exact path={routes.products}>
-                            <Product />
-                        </Route>
+						<Route exact path={routes.cart}>
+							<Cart />
+						</Route>
 
-                        <Route exact path={routes.categories}>
-                            <Categories />
-                        </Route>
+						<Route exact path={routes.products}>
+							<Product />
+						</Route>
 
-                        <Route exact path={routes.home}>
-                            <Home />
-                        </Route>
+						<Route exact path={routes.categories}>
+							<Categories />
+						</Route>
 
-                        <Redirect to={routes.home} />
-                    </Switch>
-                </PageContainer>
-            </UserContext.Provider>
-        </BrowserRouter>
-    );
+						<Route exact path={routes.home}>
+							<Home />
+						</Route>
+
+						<Redirect to={routes.home} />
+					</Switch>
+				</PageContainer>
+			</UserContext.Provider>
+		</BrowserRouter>
+	);
 }

@@ -20,7 +20,7 @@ const ContainerStyle = styled.div`
 	max-width: 600px;
 	position: relative;
 
-	@media (max-width: 600px) {
+	@media (max-width: 599px) {
 		display: none;
 	}
 `;

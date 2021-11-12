@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { getProducts } from '../../services/dataApi';
 
 export default function Pages({ totalPages, currentPage, setCurrentPage }) {
     const pages = [];
