@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 
@@ -14,10 +14,10 @@ import FormButton from '../buttons/FormButton';
 
 import { postLogin } from '../../services/dataApi';
 
-import { loginErrors } from '../../helpers/helpers';
+import { loginErrors, saveUserOnLocalStorage } from '../../helpers/helpers';
 
 export default function SignUp() {
-	const { user, setUser } = useContext(UserContext);
+	const { setUser } = useContext(UserContext);
 	const history = useHistory();
 	const [loading, setLoading] = useState(false);
 	const [inputs, setInputs] = useState({
@@ -43,6 +43,7 @@ export default function SignUp() {
 			.then(response => {
 				setUser(response.data);
 				setLoading(false);
+				saveUserOnLocalStorage(response.data);
 				history.push(routes.home);
 			})
 			.catch(error => {

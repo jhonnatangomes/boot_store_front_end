@@ -28,4 +28,20 @@ const loginErrors = receivedStatusCode => {
 	}
 };
 
-export { samePassword, signUpErrors, loginErrors };
+const saveUserOnLocalStorage = user =>
+	localStorage.setItem('boot_store_user', JSON.stringify(user));
+
+const loadUserFromLocalStorage = () =>
+	JSON.parse(localStorage.getItem('boot_store_user'));
+
+const deleteUserOnLocalStorage = () =>
+	localStorage.removeItem('boot_store_user');
+
+export {
+	samePassword,
+	signUpErrors,
+	loginErrors,
+	saveUserOnLocalStorage,
+	loadUserFromLocalStorage,
+	deleteUserOnLocalStorage,
+};
