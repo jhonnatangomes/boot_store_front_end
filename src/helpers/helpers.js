@@ -5,7 +5,7 @@ const samePassword = (password, passwordCheck) => password === passwordCheck;
 const signUpErrors = receivedStatusCode => {
 	switch (receivedStatusCode) {
 		case statusCode.badRequest:
-			return 'Email ou senha inválido';
+			return 'Preencha todos os campos corretamente';
 
 		case statusCode.conflict:
 			return 'Este e-mail já está em uso';
@@ -15,10 +15,4 @@ const signUpErrors = receivedStatusCode => {
 	}
 };
 
-const resetInputsValues = inputs =>
-	inputs.map(inp => {
-		inp.value = '';
-		return inp;
-	});
-
-export { samePassword, signUpErrors, resetInputsValues };
+export { samePassword, signUpErrors };

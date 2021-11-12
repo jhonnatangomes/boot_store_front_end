@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router';
 
 import routes from '../../routes/routes';
 
@@ -10,43 +11,64 @@ import InputLabel from '../inputsAndForms/InputLabel';
 import InputStyle from '../inputsAndForms/InputStyle';
 import FormButton from '../buttons/FormButton';
 
-import {
-	samePassword,
-	signUpErrors,
-	resetInputsValues,
-} from '../../helpers/helpers';
+import { postSignUp } from '../../services/dataApi';
+
+import { samePassword, signUpErrors } from '../../helpers/helpers';
 
 export default function SignUp() {
+	const history = useHistory();
 	const [loading, setLoading] = useState(false);
 	const [inputs, setInputs] = useState({
-		name: {
-			value: '',
-		},
-		email: {
-			value: '',
-		},
-		password: {
-			value: '',
-		},
-		passwordCheck: {
-			value: '',
-		},
-		avatarUrl: {
-			value: '',
-		},
+		name: '',
+		email: '',
+		password: '',
+		passwordCheck: '',
+		avatarUrl: '',
 	});
 
 	function inputModifier(field, newValue) {
-		inputs[field].value = newValue;
+		if (loading) return;
+
+		inputs[field] = newValue;
 		setInputs({ ...inputs });
 	}
 
 	function formSubmit(event) {
-		setLoading(true);
-
 		event.preventDefault();
 
-		setLoading(false);
+		if (loading) return;
+
+		setLoading(true);
+
+		if (!samePassword(inputs.password, inputs.passwordCheck)) {
+			inputModifier('password', '');
+			inputModifier('passwordCheck', '');
+			setLoading(false);
+
+			alert(
+				'As senhas inseridas não conferem. Por favor, insira as senhas novamente.'
+			);
+			return;
+		}
+
+		let requestBody = { ...inputs };
+		delete requestBody.passwordCheck;
+
+		if (requestBody.avatarUrl.length === 0) {
+			delete requestBody.avatarUrl;
+		}
+
+		postSignUp(requestBody)
+			.then(response => {
+				alert('Usuário cadastrado com sucesso.');
+
+				history.push(routes.login);
+			})
+			.catch(error => {
+				const text = signUpErrors(error.response.status);
+				alert(text);
+				setLoading(false);
+			});
 	}
 
 	return (
@@ -58,53 +80,42 @@ export default function SignUp() {
 
 				<InputStyle
 					name='name'
-					value={inputs.name.value}
-					onChange={
-						loading
-							? null
-							: event => inputModifier('name', event.target.value)
+					value={inputs.name}
+					onChange={event =>
+						inputModifier('name', event.target.value)
 					}
 					placeholder='Nome'
-					loading={loading}
 					type='text'
 					required={true}
+					$loading={loading}
 				/>
 
 				<InputLabel htmlFor='email'>E-mail</InputLabel>
 
 				<InputStyle
 					name='email'
-					value={inputs.email.value}
-					onChange={
-						loading
-							? null
-							: event =>
-									inputModifier('email', event.target.value)
+					value={inputs.email}
+					onChange={event =>
+						inputModifier('email', event.target.value)
 					}
 					placeholder='Ex: joao@email.com'
-					loading={loading}
 					type='email'
 					required={true}
+					$loading={loading}
 				/>
 
 				<InputLabel htmlFor='password'>Senha</InputLabel>
 
 				<InputStyle
 					name='password'
-					value={inputs.password.value}
-					onChange={
-						loading
-							? null
-							: event =>
-									inputModifier(
-										'password',
-										event.target.value
-									)
+					value={inputs.password}
+					onChange={event =>
+						inputModifier('password', event.target.value)
 					}
 					placeholder='Senha'
-					loading={loading}
 					type='password'
 					required={true}
+					$loading={loading}
 				/>
 
 				<InputLabel htmlFor='passwordCheck'>
@@ -113,20 +124,14 @@ export default function SignUp() {
 
 				<InputStyle
 					name='passwordCheck'
-					value={inputs.passwordCheck.value}
-					onChange={
-						loading
-							? null
-							: event =>
-									inputModifier(
-										'passwordCheck',
-										event.target.value
-									)
+					value={inputs.passwordCheck}
+					onChange={event =>
+						inputModifier('passwordCheck', event.target.value)
 					}
 					placeholder='Repita a senha'
-					loading={loading}
 					type='password'
 					required={true}
+					$loading={loading}
 				/>
 
 				<InputLabel htmlFor='avatar'>
@@ -135,27 +140,21 @@ export default function SignUp() {
 
 				<InputStyle
 					name='avatar'
-					value={inputs.avatarUrl.value}
-					onChange={
-						loading
-							? null
-							: event =>
-									inputModifier(
-										'avatarUrl',
-										event.target.value
-									)
+					value={inputs.avatarUrl}
+					onChange={event =>
+						inputModifier('avatarUrl', event.target.value)
 					}
 					placeholder='Url da foto'
-					loading={loading}
 					type='url'
+					$loading={loading}
 				/>
 
-				<FormButton type='submit' loading={loading}>
+				<FormButton type='submit' $loading={loading}>
 					Cadastrar
 				</FormButton>
 			</FormStyle>
 
-			<FakeLink to={routes.login} loading={loading}>
+			<FakeLink to={routes.login} $loading={loading}>
 				Já tem uma conta? Entre agora!
 			</FakeLink>
 		</FormContainer>
