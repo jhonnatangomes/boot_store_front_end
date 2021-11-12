@@ -9,6 +9,7 @@ const FormButton = styled.button`
 	padding: 5px;
 	background-color: rgb(218 165 32);
 	border: 1px solid rgb(100, 100, 100);
+	border-radius: 5px;
 	cursor: ${({ loading }) => (loading ? 'default' : 'pointer')};
 `;
 
