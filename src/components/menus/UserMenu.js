@@ -25,7 +25,7 @@ export default function UserMenu({ closed, setClosed }) {
 
 	return (
 		<UserMenuStyle closed={closed}>
-			<h2>{user ? `Olá, ${user}` : ''}</h2>
+			<h2>{user ? `Olá, ${user.name}` : ''}</h2>
 			<ul>
 				{user ? (
 					<>

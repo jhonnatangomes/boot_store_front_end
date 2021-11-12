@@ -12,9 +12,12 @@ import InputLabel from '../inputsAndForms/InputLabel';
 import InputStyle from '../inputsAndForms/InputStyle';
 import FormButton from '../buttons/FormButton';
 
-import { getServerStatus } from '../../services/dataApi';
+import { postLogin } from '../../services/dataApi';
+
+import { loginErrors } from '../../helpers/helpers';
 
 export default function SignUp() {
+	const { user, setUser } = useContext(UserContext);
 	const history = useHistory();
 	const [loading, setLoading] = useState(false);
 	const [inputs, setInputs] = useState({
@@ -36,10 +39,18 @@ export default function SignUp() {
 
 		setLoading(true);
 
-		getServerStatus().then(() => {
-			console.log('hey');
-			setLoading(false);
-		});
+		postLogin(inputs)
+			.then(response => {
+				setUser(response.data);
+				setLoading(false);
+				history.push(routes.home);
+			})
+			.catch(error => {
+				const text = loginErrors(error.response.status);
+				alert(text);
+				setLoading(false);
+				setInputs({ ...inputs, password: '' });
+			});
 	}
 
 	return (

@@ -15,4 +15,17 @@ const signUpErrors = receivedStatusCode => {
 	}
 };
 
-export { samePassword, signUpErrors };
+const loginErrors = receivedStatusCode => {
+	switch (receivedStatusCode) {
+		case statusCode.badRequest:
+			return 'Preencha todos os campos corretamente';
+
+		case statusCode.notFound:
+			return 'A senha ou o e-mail fornecido está errado';
+
+		default:
+			return 'Houve um erro ao realizar o login. Por favor, tente novamente.';
+	}
+};
+
+export { samePassword, signUpErrors, loginErrors };
