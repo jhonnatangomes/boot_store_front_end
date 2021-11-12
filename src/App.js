@@ -6,12 +6,13 @@ import PageContainer from './components/containers/PageContainer';
 import routes from './routes/routes';
 import Home from './components/homePage/Home';
 import Login from './components/login/Login';
+import SignUp from './components/signUp/SignUp';
 import Categories from './components/categories/Categories';
 import Product from './components/productPage/Product';
 import Cart from './components/cart/Cart';
 import UserOrders from './components/userOrders/UserOrders';
 
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { useState } from 'react';
 
 import UserContext from './contexts/UserContext';
@@ -25,11 +26,15 @@ export default function App() {
 				<Header />
 				<PageContainer>
 					<Switch>
+						<Route exact path={routes.signUp}>
+							<SignUp />
+						</Route>
+
 						<Route exact path={routes.login}>
 							<Login />
 						</Route>
 
-						<Route path={routes.userOrders}>
+						<Route exact path={routes.userOrders}>
 							<UserOrders />
 						</Route>
 
@@ -37,7 +42,7 @@ export default function App() {
 							<Cart />
 						</Route>
 
-						<Route path={routes.products}>
+						<Route exact path={routes.products}>
 							<Product />
 						</Route>
 
@@ -45,9 +50,11 @@ export default function App() {
 							<Categories />
 						</Route>
 
-						<Route path={routes.home}>
+						<Route exact path={routes.home}>
 							<Home />
 						</Route>
+
+						<Redirect to={routes.home} />
 					</Switch>
 				</PageContainer>
 			</UserContext.Provider>
