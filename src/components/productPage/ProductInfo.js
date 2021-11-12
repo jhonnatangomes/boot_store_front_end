@@ -17,10 +17,12 @@ export default function ProductInfo({ info }) {
                 <HorizontalSeparator></HorizontalSeparator>
                 <OtherInfo>Cor: {color}</OtherInfo>
                 <HorizontalSeparator></HorizontalSeparator>
-                <Price>Preço: R$ {price.replace('.', ',')}</Price>
-                <Link to="/carrinho/:cartId">
-                    <Button>Adicionar ao carrinho</Button>
-                </Link>
+                <div>
+                    <Price>Preço: R$ {price.replace('.', ',')}</Price>
+                    <Link to="/carrinho/:cartId">
+                        <Button>Adicionar ao carrinho</Button>
+                    </Link>
+                </div>
             </InfoContainer>
         </ProductInfoContainer>
     );
@@ -48,6 +50,7 @@ const VerticalSeparator = styled.div`
     width: 0px;
     height: 450px;
     border: 1px solid lightgrey;
+    margin: 0 25px;
 `;
 
 const HorizontalSeparator = styled.div`
@@ -59,12 +62,14 @@ const HorizontalSeparator = styled.div`
 
 const InfoContainer = styled.div`
     width: 450px;
-    height: 450px;
+    min-height: 450px;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 const ProductName = styled.p`
-    height: 40px;
     font-size: 20px;
     line-height: 22px;
     margin-bottom: 20px;
@@ -80,7 +85,7 @@ const OtherInfo = styled.p`
 
 const Price = styled.p`
     font-weight: bold;
-    margin-top: 60px;
+    margin-top: 20px;
     font-size: 20px;
     line-height: 21px;
 `;
@@ -91,7 +96,7 @@ const Button = styled.button`
     background-color: green;
     border: none;
     border-radius: 10px;
-    margin-top: 55px;
+    margin-top: 20px;
     margin-left: 100px;
     font-family: 'Roboto', sans-serif;
     font-size: 18px;

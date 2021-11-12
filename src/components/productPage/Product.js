@@ -49,7 +49,6 @@ const PageContainer = styled.div`
 `;
 
 const ProductContainer = styled.div`
-    width: 1050px;
     height: 600px;
     border: 1px solid lightgray;
     padding: 27px;
