@@ -19,7 +19,7 @@ export default function ProductInfo({ info }) {
                 <HorizontalSeparator></HorizontalSeparator>
                 <div>
                     <Price>Preço: R$ {price.replace('.', ',')}</Price>
-                    <Link to="/carrinho/:cartId">
+                    <Link to="/carrinho">
                         <Button>Adicionar ao carrinho</Button>
                     </Link>
                 </div>
