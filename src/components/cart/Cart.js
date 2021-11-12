@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import Product from './Product';
+import { Link } from 'react-router-dom';
+import routes from '../../routes/routes';
 
 export default function Cart() {
     return (
@@ -21,7 +23,9 @@ export default function Cart() {
                 </PriceContainer>
                 <ButtonsContainer>
                     <div>
-                        <button>Adicionar produtos</button>
+                        <Link to={routes.home}>
+                            <button>Ver mais produtos</button>
+                        </Link>
                         <button>Finalizar Compra</button>
                     </div>
                 </ButtonsContainer>
@@ -56,7 +60,7 @@ const ProductsContainer = styled.div`
     overflow: auto;
 
     & > div:not(:last-child) {
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
 `;
 
