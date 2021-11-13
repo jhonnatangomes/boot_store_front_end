@@ -4,23 +4,32 @@ import { useContext } from 'react';
 import CartContext from '../../contexts/CartContext';
 import { useHistory } from 'react-router';
 import routes from '../../routes/routes';
+import { postProduct } from '../../services/dataApi';
 
 export default function ProductInfo({ info }) {
-    const { name, description, image_url, category, price, color } = info;
+    const { id, name, description, image_url, category, price, color } = info;
     const { user } = useContext(UserContext);
     const { cart, setCart } = useContext(CartContext);
     const history = useHistory();
+
+    function insertProductInCart(newCart) {
+        if (!user) {
+            localStorage.setItem('cart', JSON.stringify(newCart));
+            history.push(routes.cart);
+        } else {
+            const promise = postProduct(user.token, { uuid: id });
+            promise.then(() => history.push(routes.cart));
+        }
+    }
 
     function addToCart() {
         const isAlreadyInCart = cart.some(
             (product) => product.real_id === info.real_id
         );
         if (!isAlreadyInCart) {
-            setCart([...cart, { ...info, productQuantity: 1 }]);
-            localStorage.setItem(
-                'cart',
-                JSON.stringify([...cart, { ...info, productQuantity: 1 }])
-            );
+            const newCart = [...cart, { ...info, productQuantity: 1 }];
+            setCart(newCart);
+            insertProductInCart(newCart);
         } else {
             const newCart = cart.map((product) => {
                 if (product.real_id === info.real_id) {
@@ -32,9 +41,8 @@ export default function ProductInfo({ info }) {
                 return product;
             });
             setCart(newCart);
-            localStorage.setItem('cart', JSON.stringify(newCart));
+            insertProductInCart(newCart);
         }
-        history.push(routes.cart);
     }
 
     return (

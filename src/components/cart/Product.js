@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 import { useContext, useState, useEffect } from 'react';
 import CartContext from '../../contexts/CartContext';
+import UserContext from '../../contexts/UserContext';
+import { removeProduct, updateQuantity } from '../../services/dataApi';
 
 export default function Product({ info, total, setTotal }) {
     const { cart, setCart } = useContext(CartContext);
+    const { user } = useContext(UserContext);
     const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
     const [productQuantity, setProductQuantity] = useState(1);
     const [pageLoaded, setPageLoaded] = useState(false);
-    const { real_id, image_url, name, price } = info;
+    const { real_id, id, image_url, name, price } = info;
 
     let totalPrice = Number(price) * productQuantity;
 
@@ -16,7 +19,8 @@ export default function Product({ info, total, setTotal }) {
             const product = cart.find((product) => product.real_id === real_id);
             setProductQuantity(product.productQuantity);
             setPageLoaded(true);
-        } else {
+        }
+        if (!user && pageLoaded) {
             cart.forEach((product) => {
                 if (product.real_id === real_id) {
                     product.productQuantity = productQuantity;
@@ -28,6 +32,13 @@ export default function Product({ info, total, setTotal }) {
                 }
             });
             localStorage.setItem('cart', JSON.stringify(cartLocalStorage));
+        }
+        if (user && pageLoaded) {
+            const promise = updateQuantity(user.token, {
+                uuid: id,
+                quantity: productQuantity,
+            });
+            promise.then((res) => setCart(res.data));
         }
     }, [productQuantity]);
 
@@ -47,12 +58,22 @@ export default function Product({ info, total, setTotal }) {
             'Você tem certeza que quer remover o produto?'
         );
         if (confirm) {
-            const newCart = cart.filter(
-                (product) => product.real_id !== real_id
-            );
-            setCart(newCart);
-            localStorage.setItem('cart', JSON.stringify(newCart));
-            setTotal(total - Number(price));
+            if (!user) {
+                const newCart = cart.filter(
+                    (product) => product.real_id !== real_id
+                );
+                setCart(newCart);
+                localStorage.setItem('cart', JSON.stringify(newCart));
+                setTotal(total - Number(price) * productQuantity);
+            } else {
+                const promise = removeProduct(user.token, id);
+                promise
+                    .then((res) => {
+                        setCart(res.data);
+                        setTotal(total - Number(price) * productQuantity);
+                    })
+                    .catch((err) => console.log(err.response));
+            }
         }
     }
 

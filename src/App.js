@@ -13,14 +13,24 @@ import Cart from './components/cart/Cart';
 import UserOrders from './components/userOrders/UserOrders';
 
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import UserContext from './contexts/UserContext';
 import CartContext from './contexts/CartContext';
 
+import { loadUserFromLocalStorage } from './helpers/helpers';
+
 export default function App() {
     const [user, setUser] = useState(null);
     const [cart, setCart] = useState([]);
+
+    useEffect(() => {
+        const savedUser = loadUserFromLocalStorage();
+
+        if (savedUser) {
+            setUser(savedUser);
+        }
+    }, []);
 
     return (
         <BrowserRouter>

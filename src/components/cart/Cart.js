@@ -4,25 +4,42 @@ import { Link } from 'react-router-dom';
 import routes from '../../routes/routes';
 import CartContext from '../../contexts/CartContext';
 import { useContext, useEffect, useState } from 'react';
+import { getCart } from '../../services/dataApi';
+import UserContext from '../../contexts/UserContext';
 
 export default function Cart() {
     const { cart, setCart } = useContext(CartContext);
+    const { user } = useContext(UserContext);
     const [total, setTotal] = useState(0);
     useEffect(() => {
-        const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
-        if (!cart.length && cartLocalStorage) {
-            setCart(cartLocalStorage);
+        if (!user) {
+            const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
+            if (!cart.length && cartLocalStorage) {
+                setCart(cartLocalStorage);
+            }
+            if (cartLocalStorage) {
+                let totalToSet = 0;
+                cartLocalStorage.map(
+                    (product) =>
+                        (totalToSet +=
+                            Number(product.price) * product.productQuantity)
+                );
+                setTotal(totalToSet);
+            }
+        } else {
+            const promise = getCart(user.token);
+            promise.then((res) => {
+                setCart(res.data);
+                let totalToSet = 0;
+                res.data.map(
+                    (product) =>
+                        (totalToSet +=
+                            Number(product.price) * product.productQuantity)
+                );
+                setTotal(totalToSet);
+            });
         }
-        if (cartLocalStorage) {
-            let totalToSet = 0;
-            cartLocalStorage.map(
-                (product) =>
-                    (totalToSet +=
-                        Number(product.price) * product.productQuantity)
-            );
-            setTotal(totalToSet);
-        }
-    }, []);
+    }, [user]);
 
     return (
         <PageContainer>

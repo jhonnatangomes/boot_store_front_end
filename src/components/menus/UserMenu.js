@@ -8,14 +8,25 @@ import routes from '../../routes/routes';
 import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 
+import { postLogout } from '../../services/dataApi';
+
+import { deleteUserOnLocalStorage } from '../../helpers/helpers';
+
 export default function UserMenu({ closed, setClosed }) {
 	const { user, setUser } = useContext(UserContext);
 	const history = useHistory();
 
 	const logout = () => {
-		localStorage.removeItem('boot-store-user');
-		setUser(null);
-		setClosed(true);
+		postLogout({ userId: user.id, token: user.token })
+			.then(response => {
+				deleteUserOnLocalStorage();
+				setUser(null);
+				setClosed(true);
+				history.push(routes.home);
+			})
+			.catch(error =>
+				alert('Houve um erro ao tentar sair. Por favor, tente de novo.')
+			);
 	};
 
 	const redirectTo = to => {
@@ -25,7 +36,7 @@ export default function UserMenu({ closed, setClosed }) {
 
 	return (
 		<UserMenuStyle closed={closed}>
-			<h2>{user ? `Olá, ${user}` : ''}</h2>
+			<h2>{user ? `Olá, ${user.name}` : ''}</h2>
 			<ul>
 				{user ? (
 					<>
