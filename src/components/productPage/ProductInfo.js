@@ -12,11 +12,28 @@ export default function ProductInfo({ info }) {
     const history = useHistory();
 
     function addToCart() {
-        setCart([...cart, { ...info, productQuantity: 1 }]);
-        localStorage.setItem(
-            'cart',
-            JSON.stringify([...cart, { ...info, productQuantity: 1 }])
+        const isAlreadyInCart = cart.some(
+            (product) => product.real_id === info.real_id
         );
+        if (!isAlreadyInCart) {
+            setCart([...cart, { ...info, productQuantity: 1 }]);
+            localStorage.setItem(
+                'cart',
+                JSON.stringify([...cart, { ...info, productQuantity: 1 }])
+            );
+        } else {
+            const newCart = cart.map((product) => {
+                if (product.real_id === info.real_id) {
+                    return {
+                        ...product,
+                        productQuantity: product.productQuantity + 1,
+                    };
+                }
+                return product;
+            });
+            setCart(newCart);
+            localStorage.setItem('cart', JSON.stringify(newCart));
+        }
         history.push(routes.cart);
     }
 
