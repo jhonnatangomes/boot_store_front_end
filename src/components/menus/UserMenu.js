@@ -8,6 +8,8 @@ import routes from '../../routes/routes';
 import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 
+import { postLogout } from '../../services/dataApi';
+
 import { deleteUserOnLocalStorage } from '../../helpers/helpers';
 
 export default function UserMenu({ closed, setClosed }) {
@@ -15,10 +17,16 @@ export default function UserMenu({ closed, setClosed }) {
 	const history = useHistory();
 
 	const logout = () => {
-		deleteUserOnLocalStorage();
-		setUser(null);
-		setClosed(true);
-		history.push(routes.home);
+		postLogout({ userId: user.id, token: user.token })
+			.then(response => {
+				deleteUserOnLocalStorage();
+				setUser(null);
+				setClosed(true);
+				history.push(routes.home);
+			})
+			.catch(error =>
+				alert('Houve um erro ao tentar sair. Por favor, tente de novo.')
+			);
 	};
 
 	const redirectTo = to => {
