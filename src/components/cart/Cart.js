@@ -2,23 +2,45 @@ import styled from 'styled-components';
 import Product from './Product';
 import { Link } from 'react-router-dom';
 import routes from '../../routes/routes';
+import CartContext from '../../contexts/CartContext';
+import { useContext, useEffect, useState } from 'react';
 
 export default function Cart() {
+    const { cart, setCart } = useContext(CartContext);
+    const [total, setTotal] = useState(0);
+    useEffect(() => {
+        const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
+        if (!cart.length && cartLocalStorage) {
+            setCart(cartLocalStorage);
+        }
+        if (cartLocalStorage) {
+            let totalToSet = 0;
+            cartLocalStorage.map(
+                (product) => (totalToSet += Number(product.price))
+            );
+            setTotal(totalToSet);
+        }
+    }, []);
+
     return (
         <PageContainer>
             <CartContainer>
                 <ProductsContainer>
-                    <Product />
-                    <Product />
-                    <Product />
-                    <Product />
+                    {cart.map((product) => (
+                        <Product
+                            key={product.real_id}
+                            info={product}
+                            total={total}
+                            setTotal={setTotal}
+                        />
+                    ))}
                 </ProductsContainer>
                 <PriceContainer>
                     <div>
                         <span>Total</span>
                     </div>
                     <div>
-                        <span>R$ 6000,00</span>
+                        <span>R$ {total}</span>
                     </div>
                 </PriceContainer>
                 <ButtonsContainer>

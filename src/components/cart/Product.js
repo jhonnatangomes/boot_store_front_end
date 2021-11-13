@@ -1,23 +1,77 @@
 import styled from 'styled-components';
+import { useContext, useState, useEffect } from 'react';
+import CartContext from '../../contexts/CartContext';
 
-export default function Product() {
+export default function Product({ info, total, setTotal }) {
+    const { cart, setCart } = useContext(CartContext);
+    const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
+    const [productQuantity, setProductQuantity] = useState(1);
+    const [pageLoaded, setPageLoaded] = useState(false);
+    const { real_id, image_url, name, price } = info;
+
+    let totalPrice = Number(price) * productQuantity;
+
+    useEffect(() => {
+        if (!pageLoaded) {
+            const product = cart.find((product) => product.real_id === real_id);
+            setProductQuantity(product.productQuantity);
+            setPageLoaded(true);
+        } else {
+            cart.forEach((product) => {
+                if (product.real_id === real_id) {
+                    product.productQuantity = productQuantity;
+                }
+            });
+            cartLocalStorage.forEach((product) => {
+                if (product.real_id === real_id) {
+                    product.productQuantity = productQuantity;
+                }
+            });
+            localStorage.setItem('cart', JSON.stringify(cartLocalStorage));
+        }
+    }, [productQuantity]);
+
+    function changeQuantity(change) {
+        if (change === '+') {
+            setProductQuantity(productQuantity + 1);
+            setTotal(total + Number(price));
+        }
+        if (change === '-' && productQuantity !== 1) {
+            setProductQuantity(productQuantity - 1);
+            setTotal(total - Number(price));
+        }
+    }
+
+    function removeItem() {
+        const confirm = window.confirm(
+            'Você tem certeza que quer remover o produto?'
+        );
+        if (confirm) {
+            const newCart = cart.filter(
+                (product) => product.real_id !== real_id
+            );
+            setCart(newCart);
+            localStorage.setItem('cart', JSON.stringify(newCart));
+            setTotal(total - Number(price));
+        }
+    }
+
     return (
         <ProductContainer>
-            <ProductImage></ProductImage>
+            <ProductImage>
+                <img src={image_url} alt=""></img>
+            </ProductImage>
             <ProductName>
-                <span>
-                    Um produto com nome muito grande OMG que nome gigante cara.
-                    Quantas linhas? Será que 4 dá? jajhsjashjahjshajshjah
-                    ajshajshash
-                </span>
+                <span>{name}</span>
             </ProductName>
             <Price>
                 <Counter>
-                    <button>-</button>
-                    <span>1</span>
-                    <button>+</button>
+                    <button onClick={() => changeQuantity('-')}>-</button>
+                    <span>{productQuantity}</span>
+                    <button onClick={() => changeQuantity('+')}>+</button>
                 </Counter>
-                <span>R$ 1500,00</span>
+                <span>R$ {totalPrice.toFixed(2).replace('.', ',')}</span>
+                <Remove onClick={removeItem}>Remover</Remove>
             </Price>
         </ProductContainer>
     );
@@ -36,6 +90,12 @@ const ProductImage = styled.div`
     width: 80px;
     height: 80px;
     background-color: black;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 `;
 
 const ProductName = styled.div`
@@ -56,15 +116,16 @@ const Price = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-items: center;
 
-    & > span {
+    & > span:nth-child(2) {
         font-size: 16px;
         font-weight: bold;
     }
 `;
 
 const Counter = styled.div`
-    max-width: 135px;
+    width: 80px;
     height: 20px;
     display: flex;
     justify-content: space-between;
@@ -80,4 +141,10 @@ const Counter = styled.div`
         border: 1px solid lightgray;
         cursor: pointer;
     }
+`;
+
+const Remove = styled.span`
+    font-size: 15px;
+    text-decoration: underline;
+    cursor: pointer;
 `;

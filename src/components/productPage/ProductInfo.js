@@ -10,10 +10,13 @@ export default function ProductInfo({ info }) {
     const { user } = useContext(UserContext);
     const { cart, setCart } = useContext(CartContext);
     const history = useHistory();
-    console.log(cart);
 
     function addToCart() {
-        setCart([...cart, info]);
+        setCart([...cart, { ...info, productQuantity: 1 }]);
+        localStorage.setItem(
+            'cart',
+            JSON.stringify([...cart, { ...info, productQuantity: 1 }])
+        );
         history.push(routes.cart);
     }
 
@@ -33,6 +36,7 @@ export default function ProductInfo({ info }) {
                 <HorizontalSeparator></HorizontalSeparator>
                 <div>
                     <Price>Preço: R$ {price.replace('.', ',')}</Price>
+
                     <Button onClick={addToCart}>Adicionar ao carrinho</Button>
                 </div>
             </InfoContainer>

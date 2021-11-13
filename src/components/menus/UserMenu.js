@@ -25,21 +25,25 @@ export default function UserMenu({ closed, setClosed }) {
 
 	return (
 		<UserMenuStyle closed={closed}>
-			<h2>{user ? `Olá, ${user}` : 'Olá'}</h2>
+			<h2>{user ? `Olá, ${user}` : ''}</h2>
 			<ul>
-				<li
-					onClick={
-						user
-							? () => redirectTo(routes.userOrders)
-							: () => redirectTo(routes.login)
-					}
-				>
-					Meus pedidos
-				</li>
+				{user ? (
+					<>
+						<li onClick={() => redirectTo(routes.userOrders)}>
+							Meus pedidos
+						</li>
 
-				<li onClick={user ? logout : () => redirectTo(routes.login)}>
-					{user ? 'Sair' : 'Entrar'}
-				</li>
+						<li onClick={logout}>Sair</li>
+					</>
+				) : (
+					<>
+						<li onClick={() => redirectTo(routes.login)}>Entrar</li>
+
+						<li onClick={() => redirectTo(routes.signUp)}>
+							Cadastrar
+						</li>
+					</>
+				)}
 			</ul>
 		</UserMenuStyle>
 	);
