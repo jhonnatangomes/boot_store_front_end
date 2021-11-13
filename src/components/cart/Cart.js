@@ -16,7 +16,9 @@ export default function Cart() {
         if (cartLocalStorage) {
             let totalToSet = 0;
             cartLocalStorage.map(
-                (product) => (totalToSet += Number(product.price))
+                (product) =>
+                    (totalToSet +=
+                        Number(product.price) * product.productQuantity)
             );
             setTotal(totalToSet);
         }
