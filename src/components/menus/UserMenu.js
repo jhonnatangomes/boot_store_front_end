@@ -8,14 +8,17 @@ import routes from '../../routes/routes';
 import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 
+import { deleteUserOnLocalStorage } from '../../helpers/helpers';
+
 export default function UserMenu({ closed, setClosed }) {
 	const { user, setUser } = useContext(UserContext);
 	const history = useHistory();
 
 	const logout = () => {
-		localStorage.removeItem('boot-store-user');
+		deleteUserOnLocalStorage();
 		setUser(null);
 		setClosed(true);
+		history.push(routes.home);
 	};
 
 	const redirectTo = to => {
