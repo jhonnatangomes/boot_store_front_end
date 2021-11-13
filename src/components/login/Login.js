@@ -16,7 +16,7 @@ import { postLogin } from '../../services/dataApi';
 
 import { loginErrors, saveUserOnLocalStorage } from '../../helpers/helpers';
 
-export default function SignUp() {
+export default function Login() {
 	const { setUser } = useContext(UserContext);
 	const history = useHistory();
 	const [loading, setLoading] = useState(false);
