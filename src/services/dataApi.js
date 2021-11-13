@@ -15,6 +15,10 @@ const getCategoryProducts = (categoryName, page = 1) =>
 
 const postSignUp = requestBody => axiosBase.post('/sign-up', requestBody);
 
+const postLogin = requestBody => axiosBase.post('/login', requestBody);
+
+const postLogout = requestBody => axiosBase.post('/logout', requestBody);
+
 const getProductInfo = uuid => axiosBase.get(`/products/${uuid}`);
 
 export {
@@ -23,5 +27,7 @@ export {
 	getProducts,
 	getCategoryProducts,
 	postSignUp,
+	postLogin,
+	postLogout,
 	getProductInfo,
 };

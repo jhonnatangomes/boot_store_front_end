@@ -1,17 +1,100 @@
 import { useHistory } from 'react-router-dom';
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 
 import routes from '../../routes/routes';
 
-export default function Login() {
+import FormContainer from '../containers/FormContainer';
+import FormTitle from '../inputsAndForms/FormTitle';
+import FakeLink from '../FakeLink';
+import FormStyle from '../inputsAndForms/FormStyle';
+import InputLabel from '../inputsAndForms/InputLabel';
+import InputStyle from '../inputsAndForms/InputStyle';
+import FormButton from '../buttons/FormButton';
+
+import { postLogin } from '../../services/dataApi';
+
+import { loginErrors, saveUserOnLocalStorage } from '../../helpers/helpers';
+
+export default function SignUp() {
 	const { setUser } = useContext(UserContext);
 	const history = useHistory();
+	const [loading, setLoading] = useState(false);
+	const [inputs, setInputs] = useState({
+		email: '',
+		password: '',
+	});
+
+	function inputModifier(field, newValue) {
+		if (loading) return;
+
+		inputs[field] = newValue;
+		setInputs({ ...inputs });
+	}
+
+	function formSubmit(event) {
+		event.preventDefault();
+
+		if (loading) return;
+
+		setLoading(true);
+
+		postLogin(inputs)
+			.then(response => {
+				setUser(response.data);
+				setLoading(false);
+				saveUserOnLocalStorage(response.data);
+				history.push(routes.home);
+			})
+			.catch(error => {
+				const text = loginErrors(error.response.status);
+				alert(text);
+				setLoading(false);
+				setInputs({ ...inputs, password: '' });
+			});
+	}
 
 	return (
-		<>
-			<div onClick={() => setUser('teste')}>Login</div>
-			<div onClick={() => history.push(routes.signUp)}>cadastrar</div>
-		</>
+		<FormContainer>
+			<FormTitle>Acesse sua conta</FormTitle>
+
+			<FormStyle onSubmit={formSubmit}>
+				<InputLabel htmlFor='email'>E-mail</InputLabel>
+
+				<InputStyle
+					name='email'
+					value={inputs.email}
+					onChange={event =>
+						inputModifier('email', event.target.value)
+					}
+					placeholder='Ex: joao@email.com'
+					type='email'
+					required={true}
+					$loading={loading}
+				/>
+
+				<InputLabel htmlFor='password'>Senha</InputLabel>
+
+				<InputStyle
+					name='password'
+					value={inputs.password}
+					onChange={event =>
+						inputModifier('password', event.target.value)
+					}
+					placeholder='Senha'
+					type='password'
+					required={true}
+					$loading={loading}
+				/>
+
+				<FormButton type='submit' $loading={loading}>
+					Entrar
+				</FormButton>
+			</FormStyle>
+
+			<FakeLink to={routes.signUp} $loading={loading}>
+				Não tem conta? Cadastre-se!
+			</FakeLink>
+		</FormContainer>
 	);
 }
