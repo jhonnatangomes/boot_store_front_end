@@ -33,6 +33,9 @@ const removeProduct = (token, uuid) =>
 const updateQuantity = (token, body) =>
     axiosBase.put('/cart', body, headersConfig(token));
 
+const closeCart = (token) =>
+    axiosBase.post('/checkout', {}, headersConfig(token));
+
 export {
     getServerStatus,
     getAllCategories,
@@ -46,4 +49,5 @@ export {
     postProduct,
     removeProduct,
     updateQuantity,
+    closeCart,
 };

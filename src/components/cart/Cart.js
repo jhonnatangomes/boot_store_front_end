@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import routes from '../../routes/routes';
 import CartContext from '../../contexts/CartContext';
 import { useContext, useEffect, useState } from 'react';
-import { getCart } from '../../services/dataApi';
+import { getCart, closeCart } from '../../services/dataApi';
 import UserContext from '../../contexts/UserContext';
 
 export default function Cart() {
@@ -16,6 +16,9 @@ export default function Cart() {
             const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
             if (!cart.length && cartLocalStorage) {
                 setCart(cartLocalStorage);
+            }
+            if (cart.length && !cartLocalStorage.length) {
+                setCart([]);
             }
             if (cartLocalStorage) {
                 let totalToSet = 0;
@@ -40,6 +43,19 @@ export default function Cart() {
             });
         }
     }, [user]);
+
+    function finishOrder() {
+        const confirm = window.confirm('Você deseja finalizar a compra?');
+        if (confirm) {
+            const promise = closeCart(user.token);
+            promise
+                .then(() => {
+                    alert('Compra finalizada com sucesso');
+                    setCart([]);
+                })
+                .catch((err) => console.log(err.response));
+        }
+    }
 
     return (
         <PageContainer>
@@ -67,7 +83,7 @@ export default function Cart() {
                         <Link to={routes.home}>
                             <button>Ver mais produtos</button>
                         </Link>
-                        <button>Finalizar Compra</button>
+                        <button onClick={finishOrder}>Finalizar Compra</button>
                     </div>
                 </ButtonsContainer>
             </CartContainer>
