@@ -1,4 +1,5 @@
 import statusCode from '../services/statusCodes';
+import { postProduct } from '../services/dataApi';
 
 const samePassword = (password, passwordCheck) => password === passwordCheck;
 
@@ -37,6 +38,14 @@ const loadUserFromLocalStorage = () =>
 const deleteUserOnLocalStorage = () =>
     localStorage.removeItem('boot_store_user');
 
+const insertLocalStorageInCart = (token) => {
+    const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
+    cartLocalStorage.forEach((product) => {
+        const promise = postProduct(token, { uuid: product.id });
+        promise.catch((err) => console.log(err.response));
+    });
+};
+
 const headersConfig = (token) => {
     return {
         headers: {
@@ -53,4 +62,5 @@ export {
     loadUserFromLocalStorage,
     deleteUserOnLocalStorage,
     headersConfig,
+    insertLocalStorageInCart,
 };

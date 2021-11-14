@@ -6,13 +6,16 @@ import CartContext from '../../contexts/CartContext';
 import { useContext, useEffect, useState } from 'react';
 import { getCart, closeCart } from '../../services/dataApi';
 import UserContext from '../../contexts/UserContext';
+import { useHistory } from 'react-router';
 
 export default function Cart() {
     const { cart, setCart } = useContext(CartContext);
     const { user } = useContext(UserContext);
     const [total, setTotal] = useState(0);
+    const history = useHistory();
+
     useEffect(() => {
-        if (!user) {
+        if (!localStorage.getItem('boot_store_user')) {
             const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
             if (!cart.length && cartLocalStorage) {
                 setCart(cartLocalStorage);
@@ -30,30 +33,38 @@ export default function Cart() {
                 setTotal(totalToSet);
             }
         } else {
-            const promise = getCart(user.token);
-            promise.then((res) => {
-                setCart(res.data);
-                let totalToSet = 0;
-                res.data.map(
-                    (product) =>
-                        (totalToSet +=
-                            Number(product.price) * product.productQuantity)
-                );
-                setTotal(totalToSet);
-            });
+            if (user) {
+                const promise = getCart(user.token);
+                promise.then((res) => {
+                    setCart(res.data);
+                    let totalToSet = 0;
+                    res.data.map(
+                        (product) =>
+                            (totalToSet +=
+                                Number(product.price) * product.productQuantity)
+                    );
+                    setTotal(totalToSet);
+                });
+            }
         }
     }, [user]);
 
     function finishOrder() {
         const confirm = window.confirm('Você deseja finalizar a compra?');
         if (confirm) {
-            const promise = closeCart(user.token);
-            promise
-                .then(() => {
-                    alert('Compra finalizada com sucesso');
-                    setCart([]);
-                })
-                .catch((err) => console.log(err.response));
+            if (user) {
+                const promise = closeCart(user.token);
+                promise
+                    .then(() => {
+                        alert('Compra finalizada com sucesso');
+                        setCart([]);
+                        localStorage.setItem('cart', JSON.stringify([]));
+                        setTotal(0);
+                    })
+                    .catch((err) => console.log(err.response));
+            } else {
+                history.push(routes.login);
+            }
         }
     }
 
