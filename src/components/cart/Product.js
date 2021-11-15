@@ -72,7 +72,10 @@ export default function Product({ info, total, setTotal }) {
                         setCart(res.data);
                         setTotal(total - Number(price) * productQuantity);
                         if (res.data.length) {
-                            localStorage.setItem('cart', res.data);
+                            localStorage.setItem(
+                                'cart',
+                                JSON.stringify(res.data)
+                            );
                         } else {
                             localStorage.removeItem('cart');
                         }
