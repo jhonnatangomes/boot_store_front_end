@@ -20,9 +20,6 @@ export default function Cart() {
             if (!cart.length && cartLocalStorage) {
                 setCart(cartLocalStorage);
             }
-            if (cart.length && !cartLocalStorage.length) {
-                setCart([]);
-            }
             if (cartLocalStorage) {
                 let totalToSet = 0;
                 cartLocalStorage.map(
@@ -47,7 +44,7 @@ export default function Cart() {
                 });
             }
         }
-    }, [user]);
+    }, [user, cart]);
 
     function finishOrder() {
         const confirm = window.confirm('Você deseja finalizar a compra?');
