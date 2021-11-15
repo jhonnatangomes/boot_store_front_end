@@ -44,7 +44,7 @@ export default function Cart() {
                 });
             }
         }
-    }, [user, cart]);
+    }, [user]);
 
     function finishOrder() {
         const confirm = window.confirm('Você deseja finalizar a compra?');

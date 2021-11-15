@@ -46,10 +46,6 @@ const insertLocalStorageInCart = (token) => {
     });
 };
 
-const deleteCartOnLocalStorage = () => {
-    localStorage.removeItem('cart');
-};
-
 const headersConfig = (token) => {
     return {
         headers: {
@@ -67,5 +63,4 @@ export {
     deleteUserOnLocalStorage,
     headersConfig,
     insertLocalStorageInCart,
-    deleteCartOnLocalStorage,
 };

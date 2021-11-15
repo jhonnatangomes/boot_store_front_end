@@ -71,6 +71,11 @@ export default function Product({ info, total, setTotal }) {
                     .then((res) => {
                         setCart(res.data);
                         setTotal(total - Number(price) * productQuantity);
+                        if (res.data.length) {
+                            localStorage.setItem('cart', res.data);
+                        } else {
+                            localStorage.removeItem('cart');
+                        }
                     })
                     .catch((err) => console.log(err.response));
             }

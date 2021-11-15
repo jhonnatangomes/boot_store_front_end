@@ -10,22 +10,21 @@ import UserContext from '../../contexts/UserContext';
 
 import { postLogout } from '../../services/dataApi';
 
-import {
-    deleteUserOnLocalStorage,
-    deleteCartOnLocalStorage,
-} from '../../helpers/helpers';
+import { deleteUserOnLocalStorage } from '../../helpers/helpers';
+import CartContext from '../../contexts/CartContext';
 
 export default function UserMenu({ closed, setClosed }) {
     const { user, setUser } = useContext(UserContext);
+    const { cart } = useContext(CartContext);
     const history = useHistory();
 
     const logout = () => {
         postLogout({ userId: user.id, token: user.token })
             .then((response) => {
                 deleteUserOnLocalStorage();
-                deleteCartOnLocalStorage();
                 setUser(null);
                 setClosed(true);
+                localStorage.setItem('cart', JSON.stringify(cart));
                 history.push(routes.home);
             })
             .catch((error) =>
