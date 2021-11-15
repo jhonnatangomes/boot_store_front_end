@@ -40,6 +40,9 @@ const deleteUserOnLocalStorage = () =>
 
 const insertLocalStorageInCart = (token) => {
     const cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
+
+    if (!cartLocalStorage || cartLocalStorage.length === 0) return;
+
     cartLocalStorage.forEach((product) => {
         const promise = postProduct(token, { uuid: product.id });
         promise.catch((err) => console.log(err.response));
