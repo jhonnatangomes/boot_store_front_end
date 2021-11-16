@@ -45,11 +45,13 @@ export default function Product({ info, total, setTotal }) {
     function changeQuantity(change) {
         if (change === '+') {
             setProductQuantity(productQuantity + 1);
-            setTotal(total + Number(price));
+            const totalToSet = Number(total.replace(',', '.')) + Number(price);
+            setTotal(totalToSet.toFixed(2).replace('.', ','));
         }
         if (change === '-' && productQuantity !== 1) {
             setProductQuantity(productQuantity - 1);
-            setTotal(total - Number(price));
+            const totalToSet = Number(total.replace(',', '.')) - Number(price);
+            setTotal(totalToSet.toFixed(2).replace('.', ','));
         }
     }
 
@@ -64,13 +66,19 @@ export default function Product({ info, total, setTotal }) {
                 );
                 setCart(newCart);
                 localStorage.setItem('cart', JSON.stringify(newCart));
-                setTotal(total - Number(price) * productQuantity);
+                const totalToSet =
+                    Number(total.replace(',', '.')) -
+                    Number(price) * productQuantity;
+                setTotal(totalToSet.toFixed(2).replace('.', ','));
             } else {
                 const promise = removeProduct(user.token, id);
                 promise
                     .then((res) => {
                         setCart(res.data);
-                        setTotal(total - Number(price) * productQuantity);
+                        const totalToSet =
+                            Number(total.replace(',', '.')) -
+                            Number(price) * productQuantity;
+                        setTotal(totalToSet.toFixed(2).replace('.', ','));
                         if (res.data.length) {
                             localStorage.setItem(
                                 'cart',
