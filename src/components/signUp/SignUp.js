@@ -16,147 +16,147 @@ import { postSignUp } from '../../services/dataApi';
 import { samePassword, signUpErrors } from '../../helpers/helpers';
 
 export default function SignUp() {
-	const history = useHistory();
-	const [loading, setLoading] = useState(false);
-	const [inputs, setInputs] = useState({
-		name: '',
-		email: '',
-		password: '',
-		passwordCheck: '',
-		avatarUrl: '',
-	});
+    const history = useHistory();
+    const [loading, setLoading] = useState(false);
+    const [inputs, setInputs] = useState({
+        name: '',
+        email: '',
+        password: '',
+        passwordCheck: '',
+        avatarUrl: '',
+    });
 
-	function inputModifier(field, newValue) {
-		if (loading) return;
+    function inputModifier(field, newValue) {
+        if (loading) return;
 
-		inputs[field] = newValue;
-		setInputs({ ...inputs });
-	}
+        inputs[field] = newValue;
+        setInputs({ ...inputs });
+    }
 
-	function formSubmit(event) {
-		event.preventDefault();
+    function formSubmit(event) {
+        event.preventDefault();
 
-		if (loading) return;
+        if (loading) return;
 
-		setLoading(true);
+        setLoading(true);
 
-		if (!samePassword(inputs.password, inputs.passwordCheck)) {
-			inputModifier('password', '');
-			inputModifier('passwordCheck', '');
-			setLoading(false);
+        if (!samePassword(inputs.password, inputs.passwordCheck)) {
+            inputModifier('password', '');
+            inputModifier('passwordCheck', '');
+            setLoading(false);
 
-			alert(
-				'As senhas inseridas não conferem. Por favor, insira as senhas novamente.'
-			);
-			return;
-		}
+            alert(
+                'As senhas inseridas não conferem. Por favor, insira as senhas novamente.'
+            );
+            return;
+        }
 
-		let requestBody = { ...inputs };
-		delete requestBody.passwordCheck;
+        let requestBody = { ...inputs };
+        delete requestBody.passwordCheck;
 
-		if (requestBody.avatarUrl.length === 0) {
-			delete requestBody.avatarUrl;
-		}
+        if (requestBody.avatarUrl.length === 0) {
+            delete requestBody.avatarUrl;
+        }
 
-		postSignUp(requestBody)
-			.then(response => {
-				alert('Usuário cadastrado com sucesso.');
+        postSignUp(requestBody)
+            .then((response) => {
+                alert('Usuário cadastrado com sucesso.');
 
-				history.push(routes.login);
-			})
-			.catch(error => {
-				const text = signUpErrors(error.response.status);
-				alert(text);
-				setLoading(false);
-			});
-	}
+                history.push(routes.login);
+            })
+            .catch((error) => {
+                const text = signUpErrors(error.response.status);
+                alert(text);
+                setLoading(false);
+            });
+    }
 
-	return (
-		<FormContainer>
-			<FormTitle>Crie seu cadastro</FormTitle>
+    return (
+        <FormContainer>
+            <FormTitle>Crie seu cadastro</FormTitle>
 
-			<FormStyle onSubmit={formSubmit}>
-				<InputLabel htmlFor='name'>Nome</InputLabel>
+            <FormStyle onSubmit={formSubmit}>
+                <InputLabel htmlFor="name">Nome</InputLabel>
 
-				<InputStyle
-					name='name'
-					value={inputs.name}
-					onChange={event =>
-						inputModifier('name', event.target.value)
-					}
-					placeholder='Nome'
-					type='text'
-					required={true}
-					$loading={loading}
-				/>
+                <InputStyle
+                    name="name"
+                    value={inputs.name}
+                    onChange={(event) =>
+                        inputModifier('name', event.target.value)
+                    }
+                    placeholder="Nome"
+                    type="text"
+                    required={true}
+                    $loading={loading}
+                />
 
-				<InputLabel htmlFor='email'>E-mail</InputLabel>
+                <InputLabel htmlFor="email">E-mail</InputLabel>
 
-				<InputStyle
-					name='email'
-					value={inputs.email}
-					onChange={event =>
-						inputModifier('email', event.target.value)
-					}
-					placeholder='Ex: joao@email.com'
-					type='email'
-					required={true}
-					$loading={loading}
-				/>
+                <InputStyle
+                    name="email"
+                    value={inputs.email}
+                    onChange={(event) =>
+                        inputModifier('email', event.target.value)
+                    }
+                    placeholder="Ex: joao@email.com"
+                    type="email"
+                    required={true}
+                    $loading={loading}
+                />
 
-				<InputLabel htmlFor='password'>Senha</InputLabel>
+                <InputLabel htmlFor="password">Senha</InputLabel>
 
-				<InputStyle
-					name='password'
-					value={inputs.password}
-					onChange={event =>
-						inputModifier('password', event.target.value)
-					}
-					placeholder='Senha'
-					type='password'
-					required={true}
-					$loading={loading}
-				/>
+                <InputStyle
+                    name="password"
+                    value={inputs.password}
+                    onChange={(event) =>
+                        inputModifier('password', event.target.value)
+                    }
+                    placeholder="Senha"
+                    type="password"
+                    required={true}
+                    $loading={loading}
+                />
 
-				<InputLabel htmlFor='passwordCheck'>
-					Confirme a senha
-				</InputLabel>
+                <InputLabel htmlFor="passwordCheck">
+                    Confirme a senha
+                </InputLabel>
 
-				<InputStyle
-					name='passwordCheck'
-					value={inputs.passwordCheck}
-					onChange={event =>
-						inputModifier('passwordCheck', event.target.value)
-					}
-					placeholder='Repita a senha'
-					type='password'
-					required={true}
-					$loading={loading}
-				/>
+                <InputStyle
+                    name="passwordCheck"
+                    value={inputs.passwordCheck}
+                    onChange={(event) =>
+                        inputModifier('passwordCheck', event.target.value)
+                    }
+                    placeholder="Repita a senha"
+                    type="password"
+                    required={true}
+                    $loading={loading}
+                />
 
-				<InputLabel htmlFor='avatar'>
-					Foto de perfil (opcional)
-				</InputLabel>
+                <InputLabel htmlFor="avatar">
+                    Foto de perfil (opcional)
+                </InputLabel>
 
-				<InputStyle
-					name='avatar'
-					value={inputs.avatarUrl}
-					onChange={event =>
-						inputModifier('avatarUrl', event.target.value)
-					}
-					placeholder='Url da foto'
-					type='url'
-					$loading={loading}
-				/>
+                <InputStyle
+                    name="avatar"
+                    value={inputs.avatarUrl}
+                    onChange={(event) =>
+                        inputModifier('avatarUrl', event.target.value)
+                    }
+                    placeholder="Url da foto"
+                    type="url"
+                    $loading={loading}
+                />
 
-				<FormButton type='submit' $loading={loading}>
-					Cadastrar
-				</FormButton>
-			</FormStyle>
+                <FormButton type="submit" $loading={loading}>
+                    Cadastrar
+                </FormButton>
+            </FormStyle>
 
-			<FakeLink to={routes.login} $loading={loading}>
-				Já tem uma conta? Entre agora!
-			</FakeLink>
-		</FormContainer>
-	);
+            <FakeLink to={routes.login} $loading={loading}>
+                Já tem uma conta? Entre agora!
+            </FakeLink>
+        </FormContainer>
+    );
 }

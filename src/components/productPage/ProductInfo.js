@@ -1,8 +1,50 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import UserContext from '../../contexts/UserContext';
+import { useContext } from 'react';
+import CartContext from '../../contexts/CartContext';
+import { useHistory } from 'react-router';
+import routes from '../../routes/routes';
+import { postProduct } from '../../services/dataApi';
 
 export default function ProductInfo({ info }) {
-    const { name, description, image_url, category, price, color } = info;
+    const { id, name, description, image_url, category, price, color } = info;
+    const { user } = useContext(UserContext);
+    const { cart, setCart } = useContext(CartContext);
+    const history = useHistory();
+
+    function insertProductInCart(newCart) {
+        if (!user) {
+            localStorage.setItem('cart', JSON.stringify(newCart));
+            history.push(routes.cart);
+        } else {
+            const promise = postProduct(user.token, { uuid: id, quantity: 1 });
+            promise.then(() => history.push(routes.cart));
+        }
+    }
+
+    function addToCart() {
+        const isAlreadyInCart = cart.some(
+            (product) => product.real_id === info.real_id
+        );
+        if (!isAlreadyInCart) {
+            const newCart = [...cart, { ...info, productQuantity: 1 }];
+            setCart(newCart);
+            insertProductInCart(newCart);
+        } else {
+            const newCart = cart.map((product) => {
+                if (product.real_id === info.real_id) {
+                    return {
+                        ...product,
+                        productQuantity: product.productQuantity + 1,
+                    };
+                }
+                return product;
+            });
+            setCart(newCart);
+            insertProductInCart(newCart);
+        }
+    }
+
     return (
         <ProductInfoContainer>
             <ImageContainer>
@@ -19,9 +61,8 @@ export default function ProductInfo({ info }) {
                 <HorizontalSeparator></HorizontalSeparator>
                 <div>
                     <Price>Preço: R$ {price.replace('.', ',')}</Price>
-                    <Link to="/carrinho/:cartId">
-                        <Button>Adicionar ao carrinho</Button>
-                    </Link>
+
+                    <Button onClick={addToCart}>Adicionar ao carrinho</Button>
                 </div>
             </InfoContainer>
         </ProductInfoContainer>
