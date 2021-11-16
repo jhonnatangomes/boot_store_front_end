@@ -44,7 +44,10 @@ const insertLocalStorageInCart = (token) => {
     if (!cartLocalStorage || cartLocalStorage.length === 0) return;
 
     cartLocalStorage.forEach((product) => {
-        const promise = postProduct(token, { uuid: product.id });
+        const promise = postProduct(token, {
+            uuid: product.id,
+            quantity: product.productQuantity,
+        });
         promise.catch((err) => console.log(err.response));
     });
 };
