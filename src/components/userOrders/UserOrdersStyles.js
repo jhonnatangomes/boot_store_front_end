@@ -78,11 +78,15 @@ const ProductName = styled.div`
 
 const SecondaryInfoContainer = styled.div`
 	height: 100%;
-	min-height: 95px;
+	min-height: 120px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	align-items: center;
+	align-items: flex-end;
+
+	@media (max-width: 600px) {
+		align-items: center;
+	}
 `;
 
 const BuyAgainButton = styled(FormButton)`

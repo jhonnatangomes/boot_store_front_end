@@ -14,25 +14,23 @@ import routes from '../../routes/routes';
 
 import { postProduct } from '../../services/dataApi';
 
+import { formatDate } from '../../helpers/helpers';
+
 export default function HistoryCard({ product }) {
 	const { productId, name, price, quantity, image_url } = product;
+	const purchaseDate = formatDate(product.purchaseDate);
 	const { user } = useContext(UserContext);
 	const { cart } = useContext(CartContext);
 
 	const history = useHistory();
 
-	function insertProductInCart(newCart) {
-		if (!user) {
-			localStorage.setItem('cart', JSON.stringify(newCart));
-			history.push(routes.cart);
-		} else {
-			postProduct(user.token, {
-				uuid: productId,
-				quantity,
-			})
-				.then(() => history.push(routes.cart))
-				.catch(error => console.log(error.response));
-		}
+	function insertProductInCart() {
+		postProduct(user.token, {
+			uuid: productId,
+			quantity,
+		})
+			.then(() => history.push(routes.cart))
+			.catch(error => console.log(error.response));
 	}
 
 	return (
@@ -42,16 +40,10 @@ export default function HistoryCard({ product }) {
 			</ImageContainer>
 			<ProductName>{name}</ProductName>
 			<SecondaryInfoContainer>
+				<div>Data da compra {purchaseDate}</div>
 				<div>Quantidade {quantity}</div>
 				<div>Preço unitário R$ {price}</div>
-				<BuyAgainButton
-					onClick={() =>
-						insertProductInCart([
-							...cart,
-							{ ...product, real_id: null },
-						])
-					}
-				>
+				<BuyAgainButton onClick={insertProductInCart}>
 					Comprar novamente
 				</BuyAgainButton>
 			</SecondaryInfoContainer>

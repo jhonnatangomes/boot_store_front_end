@@ -27,7 +27,7 @@ export default function Cart() {
 						(totalToSet +=
 							Number(product.price) * product.productQuantity)
 				);
-				setTotal(totalToSet);
+				setTotal(totalToSet.toFixed(2).replace('.', ','));
 			}
 		} else {
 			if (user) {
@@ -40,7 +40,7 @@ export default function Cart() {
 							(totalToSet +=
 								Number(product.price) * product.productQuantity)
 					);
-					setTotal(totalToSet);
+					setTotal(totalToSet.toFixed(2).replace('.', ','));
 				});
 			}
 		}
@@ -71,7 +71,7 @@ export default function Cart() {
 				<ProductsContainer>
 					{cart.map(product => (
 						<Product
-							key={product.id}
+							key={product.real_id}
 							info={product}
 							total={total}
 							setTotal={setTotal}

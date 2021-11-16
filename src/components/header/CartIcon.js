@@ -40,4 +40,7 @@ const Counter = styled.span`
 	position: absolute;
 	top: -5px;
 	right: -6px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
