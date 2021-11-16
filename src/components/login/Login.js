@@ -14,87 +14,92 @@ import FormButton from '../buttons/FormButton';
 
 import { postLogin } from '../../services/dataApi';
 
-import { loginErrors, saveUserOnLocalStorage } from '../../helpers/helpers';
+import {
+    loginErrors,
+    saveUserOnLocalStorage,
+    insertLocalStorageInCart,
+} from '../../helpers/helpers';
 
-export default function SignUp() {
-	const { setUser } = useContext(UserContext);
-	const history = useHistory();
-	const [loading, setLoading] = useState(false);
-	const [inputs, setInputs] = useState({
-		email: '',
-		password: '',
-	});
+export default function Login() {
+    const { setUser } = useContext(UserContext);
+    const history = useHistory();
+    const [loading, setLoading] = useState(false);
+    const [inputs, setInputs] = useState({
+        email: '',
+        password: '',
+    });
 
-	function inputModifier(field, newValue) {
-		if (loading) return;
+    function inputModifier(field, newValue) {
+        if (loading) return;
 
-		inputs[field] = newValue;
-		setInputs({ ...inputs });
-	}
+        inputs[field] = newValue;
+        setInputs({ ...inputs });
+    }
 
-	function formSubmit(event) {
-		event.preventDefault();
+    function formSubmit(event) {
+        event.preventDefault();
 
-		if (loading) return;
+        if (loading) return;
 
-		setLoading(true);
+        setLoading(true);
 
-		postLogin(inputs)
-			.then(response => {
-				setUser(response.data);
-				setLoading(false);
-				saveUserOnLocalStorage(response.data);
-				history.push(routes.home);
-			})
-			.catch(error => {
-				const text = loginErrors(error.response.status);
-				alert(text);
-				setLoading(false);
-				setInputs({ ...inputs, password: '' });
-			});
-	}
+        postLogin(inputs)
+            .then((response) => {
+                setUser(response.data);
+                setLoading(false);
+                saveUserOnLocalStorage(response.data);
+                insertLocalStorageInCart(response.data.token);
+                history.push(routes.home);
+            })
+            .catch((error) => {
+                const text = loginErrors(error.response.status);
+                alert(text);
+                setLoading(false);
+                setInputs({ ...inputs, password: '' });
+            });
+    }
 
-	return (
-		<FormContainer>
-			<FormTitle>Acesse sua conta</FormTitle>
+    return (
+        <FormContainer>
+            <FormTitle>Acesse sua conta</FormTitle>
 
-			<FormStyle onSubmit={formSubmit}>
-				<InputLabel htmlFor='email'>E-mail</InputLabel>
+            <FormStyle onSubmit={formSubmit}>
+                <InputLabel htmlFor="email">E-mail</InputLabel>
 
-				<InputStyle
-					name='email'
-					value={inputs.email}
-					onChange={event =>
-						inputModifier('email', event.target.value)
-					}
-					placeholder='Ex: joao@email.com'
-					type='email'
-					required={true}
-					$loading={loading}
-				/>
+                <InputStyle
+                    name="email"
+                    value={inputs.email}
+                    onChange={(event) =>
+                        inputModifier('email', event.target.value)
+                    }
+                    placeholder="Ex: joao@email.com"
+                    type="email"
+                    required={true}
+                    $loading={loading}
+                />
 
-				<InputLabel htmlFor='password'>Senha</InputLabel>
+                <InputLabel htmlFor="password">Senha</InputLabel>
 
-				<InputStyle
-					name='password'
-					value={inputs.password}
-					onChange={event =>
-						inputModifier('password', event.target.value)
-					}
-					placeholder='Senha'
-					type='password'
-					required={true}
-					$loading={loading}
-				/>
+                <InputStyle
+                    name="password"
+                    value={inputs.password}
+                    onChange={(event) =>
+                        inputModifier('password', event.target.value)
+                    }
+                    placeholder="Senha"
+                    type="password"
+                    required={true}
+                    $loading={loading}
+                />
 
-				<FormButton type='submit' $loading={loading}>
-					Entrar
-				</FormButton>
-			</FormStyle>
+                <FormButton type="submit" $loading={loading}>
+                    Entrar
+                </FormButton>
+            </FormStyle>
 
-			<FakeLink to={routes.signUp} $loading={loading}>
-				Não tem conta? Cadastre-se!
-			</FakeLink>
-		</FormContainer>
-	);
+            <FakeLink to={routes.signUp} $loading={loading}>
+                Não tem conta? Cadastre-se!
+            </FakeLink>
+        </FormContainer>
+    );
 }

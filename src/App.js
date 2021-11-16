@@ -16,58 +16,62 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import UserContext from './contexts/UserContext';
+import CartContext from './contexts/CartContext';
 
 import { loadUserFromLocalStorage } from './helpers/helpers';
 
 export default function App() {
-	const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null);
+    const [cart, setCart] = useState([]);
 
-	useEffect(() => {
-		const savedUser = loadUserFromLocalStorage();
+    useEffect(() => {
+        const savedUser = loadUserFromLocalStorage();
 
-		if (savedUser) {
-			setUser(savedUser);
-		}
-	}, []);
+        if (savedUser) {
+            setUser(savedUser);
+        }
+    }, []);
 
-	return (
-		<BrowserRouter>
-			<UserContext.Provider value={{ user, setUser }}>
-				<Header />
-				<PageContainer>
-					<Switch>
-						<Route exact path={routes.signUp}>
-							<SignUp />
-						</Route>
+    return (
+        <BrowserRouter>
+            <UserContext.Provider value={{ user, setUser }}>
+                <CartContext.Provider value={{ cart, setCart }}>
+                    <Header />
+                    <PageContainer>
+                        <Switch>
+                            <Route exact path={routes.signUp}>
+                                <SignUp />
+                            </Route>
 
-						<Route exact path={routes.login}>
-							<Login />
-						</Route>
+                            <Route exact path={routes.login}>
+                                <Login />
+                            </Route>
 
-						<Route exact path={routes.userOrders}>
-							<UserOrders />
-						</Route>
+                            <Route exact path={routes.userOrders}>
+                                <UserOrders />
+                            </Route>
 
-						<Route exact path={routes.cart}>
-							<Cart />
-						</Route>
+                            <Route exact path={routes.cart}>
+                                <Cart />
+                            </Route>
 
-						<Route exact path={routes.products}>
-							<Product />
-						</Route>
+                            <Route exact path={routes.products}>
+                                <Product />
+                            </Route>
 
-						<Route exact path={routes.categories}>
-							<Categories />
-						</Route>
+                            <Route exact path={routes.categories}>
+                                <Categories />
+                            </Route>
 
-						<Route exact path={routes.home}>
-							<Home />
-						</Route>
+                            <Route exact path={routes.home}>
+                                <Home />
+                            </Route>
 
-						<Redirect to={routes.home} />
-					</Switch>
-				</PageContainer>
-			</UserContext.Provider>
-		</BrowserRouter>
-	);
+                            <Redirect to={routes.home} />
+                        </Switch>
+                    </PageContainer>
+                </CartContext.Provider>
+            </UserContext.Provider>
+        </BrowserRouter>
+    );
 }

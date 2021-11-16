@@ -7,7 +7,6 @@ import styled from 'styled-components';
 export default function Product() {
     const [productInfo, setProductInfo] = useState(null);
     const { productId: uuid } = useParams();
-    console.log(productInfo);
     useEffect(() => {
         const promise = getProductInfo(uuid);
         promise
@@ -41,7 +40,7 @@ export default function Product() {
 }
 
 const PageContainer = styled.div`
-    min-height: calc(100vh - var(--header-height) - 1px);
+    min-height: calc(99vh - var(--header-height));
     text-align: center;
     display: flex;
     align-items: center;
