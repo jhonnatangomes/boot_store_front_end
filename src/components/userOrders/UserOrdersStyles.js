@@ -87,7 +87,7 @@ const SecondaryInfoContainer = styled.div`
 
 const BuyAgainButton = styled(FormButton)`
 	font-size: 15px;
-	width: 100%;
+	width: 150px;
 	min-width: 0px;
 `;
 
