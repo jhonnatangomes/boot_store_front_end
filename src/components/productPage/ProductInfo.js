@@ -17,7 +17,7 @@ export default function ProductInfo({ info }) {
             localStorage.setItem('cart', JSON.stringify(newCart));
             history.push(routes.cart);
         } else {
-            const promise = postProduct(user.token, { uuid: id });
+            const promise = postProduct(user.token, { uuid: id, quantity: 1 });
             promise.then(() => history.push(routes.cart));
         }
     }
