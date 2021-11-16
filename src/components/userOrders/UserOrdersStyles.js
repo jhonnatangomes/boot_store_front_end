@@ -22,7 +22,7 @@ const OrderHistoryContainer = styled.div`
 	}
 `;
 
-const HistoryCard = styled.div`
+const HistoryCardStyle = styled.div`
 	box-sizing: border-box;
 	width: 100%;
 	padding: 10px;
@@ -93,7 +93,7 @@ const BuyAgainButton = styled(FormButton)`
 
 export {
 	OrderHistoryContainer,
-	HistoryCard,
+	HistoryCardStyle,
 	ImageContainer,
 	SecondaryInfoContainer,
 	ProductName,
